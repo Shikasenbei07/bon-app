@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>料金計算ツール</title>
+<style>
+body { font-family: sans-serif; margin: 30px; }
+label, input, button { font-size: 1.2em; margin-top: 10px; }
+#result { font-weight: bold; margin-top: 15px; }
+</style>
+</head>
+<body>
+<h1>料金計算ツール</h1>
+
+<label for="hours">利用時間（時間単位）:</label>
+<input type="number" id="hours" step="0.1" min="0">
+<button onclick="calc()">計算</button>
+
+<p id="result"></p>
+
+<script>
+function calc() {
+    let hours = parseFloat(document.getElementById("hours").value);
+    let price = 0;
+
+    if (isNaN(hours) || hours < 0) {
+        document.getElementById("result").innerText = "時間を正しく入力してください";
+        return;
+    }
+
+    if (hours === 0) {
+        price = 0;
+    } else if (hours <= 2) {
+        price = 2000;
+    } else {
+        price = 2000 + 1000 * (hours - 2);
+    }
+
+    document.getElementById("result").innerText = "料金: " + price + "円";
+}
+</script>
+
+</body>
+</html>
