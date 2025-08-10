@@ -1,0 +1,81 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f0f7f4; /* 優しい緑がかった背景 */
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 600px;
+  margin: 30px auto;
+  background: #ffffff; /* 中央のカードは白 */
+  padding: 20px 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+h1 {
+  text-align: center;
+  color: #1b4332; /* 濃い緑 */
+}
+
+section {
+  margin-bottom: 20px;
+  padding: 12px;
+  background: #f8fcfa; /* セクションごとに淡い背景で区切り */
+  border-radius: 8px;
+}
+
+label h3 {
+  margin: 0 0 5px;
+  color: #2d6a4f; /* 見出しの緑 */
+}
+
+.note {
+  font-size: 0.9em;
+  color: #555;
+  margin: 5px 0 10px;
+}
+
+input, select {
+  width: 100%;
+  padding: 8px 10px;
+  font-size: 1em;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  background-color: #ffffff;
+}
+
+select[multiple] {
+  height: auto;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  font-size: 1.1em;
+  background: #40916c; /* グリーン系 */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+button:hover {
+  background: #2d6a4f;
+}
+
+#result {
+  margin-top: 20px;
+  padding: 15px;
+  background: #e6f4ea; /* 計算結果は淡い緑背景 */
+  border: 1px solid #b7e4c7;
+  border-radius: 8px;
+  font-size: 1.2em;
+  text-align: center;
+  color: #1b4332;
+  font-weight: bold;
+}
