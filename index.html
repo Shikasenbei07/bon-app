@@ -208,7 +208,7 @@ h1{color:var(--accent);margin:0 0 12px;}
   </div>
 </div>
 <script>
-// 同じ列のセル同士のみ直線を引く（grid-column: span Nも考慮）
+// 真下のセルを直線で結ぶ
 window.addEventListener('DOMContentLoaded', function() {
   const wrapper = document.getElementById('schedule-wrapper') || document.querySelector('.schedule-wrapper');
   const schedule = wrapper.querySelector('.schedule');
@@ -222,7 +222,6 @@ window.addEventListener('DOMContentLoaded', function() {
   let row = [];
   let colIdx = 0;
   cells.forEach(cell => {
-    // grid-column: span N対応
     let span = 1;
     const spanMatch = (cell.getAttribute('style')||'').match(/grid-column:\s*span\s*(\d+)/);
     if(spanMatch) span = parseInt(spanMatch[1]);
@@ -237,41 +236,31 @@ window.addEventListener('DOMContentLoaded', function() {
     }
   });
   if(row.length>0) table.push(row); // 端数
-  // カラムごとにセルを抽出
-  let colCells = Array.from({length: columns}, () => []);
-  table.forEach((r, rowIdx) => {
-    r.forEach((cell, colIdx) => {
-      colCells[colIdx].push({cell, rowIdx});
-    });
-  });
   // SVGクリア
   svg.innerHTML = '';
   const wrapperRect = wrapper.getBoundingClientRect();
-  // 各カラムで上下のセルを結ぶ
-  colCells.forEach((col, colIdx) => {
-    for(let i=0;i<col.length-1;i++){
-      const {cell:cell1} = col[i];
-      const {cell:cell2} = col[i+1];
-      if(!cell1 || !cell2 || cell1===cell2) continue;
-      if((cell1.classList && cell1.classList.contains('empty')) || (cell2.classList && cell2.classList.contains('empty'))) continue;
-      // cell2の次以降に何もセルが無い場合のみ線を描画しない
-      let hasCellBelow = false;
-      for(let j=i+2;j<col.length;j++){
-        const c = col[j].cell;
-        if(c) {
-          hasCellBelow = true;
+  // 各カラムで、真下が空ならば下方向に空でないセルが現れるまで探し、最初に見つかったセルと線を結ぶ
+  for(let col=0; col<columns; col++){
+    for(let row=0; row<table.length-1; row++){
+      const cell1 = table[row][col];
+      if(!cell1 || (cell1.classList && cell1.classList.contains('empty'))) continue;
+      // 下方向に空でないセルを探す
+      let nextRow = row + 1;
+      let cell2 = null;
+      while(nextRow < table.length) {
+        const candidate = table[nextRow][col];
+        if(candidate && !(candidate.classList && candidate.classList.contains('empty'))){
+          cell2 = candidate;
           break;
         }
+        nextRow++;
       }
-      if(!hasCellBelow) continue;
-      // cell2の次も同じセルならスキップ（spanで同じセルが続く場合の多重線防止）
-      if (col[i+2] && col[i+2].cell === cell2) continue;
+      if(!cell2) continue; // 下に空でないセルがなければ描画しない
       const rect1 = cell1.getBoundingClientRect();
       const rect2 = cell2.getBoundingClientRect();
-      // x座標は上のセルの中心、y座標は上のセルの中心→下のセルの上辺中央
       const x = rect1.left + rect1.width/2 - wrapperRect.left;
       const y1 = rect1.top + rect1.height/2 - wrapperRect.top;
-      const y2 = rect2.top - wrapperRect.top;
+      const y2 = rect2.top + rect2.height/2 - wrapperRect.top;
       const line = document.createElementNS('http://www.w3.org/2000/svg','line');
       line.setAttribute('x1', x);
       line.setAttribute('y1', y1);
@@ -282,7 +271,7 @@ window.addEventListener('DOMContentLoaded', function() {
       line.setAttribute('opacity', '0.3');
       svg.appendChild(line);
     }
-  });
+  }
   // リサイズ時も再描画
   window.addEventListener('resize', () => {
     setTimeout(()=>location.reload(), 100);
