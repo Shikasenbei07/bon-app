@@ -1,3 +1,59 @@
+/* レスポンシブ対応: 画面幅700px以下でサイドメニューを隠す */
+@media (max-width: 700px) {
+  .side-menu {
+    position: fixed;
+    left: -200px;
+    width: 180px;
+    transition: left 0.3s;
+    z-index: 2000;
+  }
+  .side-menu.open {
+    left: 0;
+  }
+  body {
+    margin-left: 0 !important;
+  }
+  .container {
+    max-width: 98vw;
+    margin: 12px 2vw;
+    padding: 10px 4vw;
+  }
+  /* ハンバーガーメニュー用ボタン */
+  .hamburger {
+    position: fixed;
+    top: 18px;
+    left: 18px;
+    z-index: 2100;
+    width: 36px;
+    height: 36px;
+    background: #2c3e50;
+    border: none;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .hamburger span {
+    display: block;
+    width: 22px;
+    height: 3px;
+    background: #fff;
+    margin: 3px 0;
+    border-radius: 2px;
+    transition: all 0.2s;
+  }
+  /* メニューオープン時に背景を暗くする */
+  body.menu-open::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.18);
+    z-index: 1500;
+  }
+}
 /* サイドメニュー用スタイル（共通） */
 .side-menu {
   position: fixed;
