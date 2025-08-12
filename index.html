@@ -49,8 +49,8 @@ h1{color:var(--accent);margin:0 0 12px;}
   min-width: 600px; /* 必要に応じて調整 */
 }
 @media(max-width:800px){
-  :root{ --time-w:70px; --tl-w:36px;}
-  .schedule{grid-template-columns: var(--time-w) var(--tl-w) repeat(5, 1fr);}
+  :root{ --time-w:70px; }
+  .schedule{grid-template-columns: var(--time-w) repeat(5, 1fr);}
   .segment::after{ font-size:12px;}
   .schedule {
     min-width: 520px; /* スマホ時も最低幅を確保 */
