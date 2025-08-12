@@ -14,8 +14,14 @@
 }
 body{font-family: "Noto Sans JP", Arial, sans-serif; background:#f8f9fa; margin:0;padding:24px;}
 h1{color:var(--accent);margin:0 0 12px;}
-.schedule-wrapper{position:relative;}
-  .schedule{display:grid;grid-template-columns: var(--time-w) repeat(5,1fr); gap:10px; align-items:start;}
+.schedule-wrapper {
+  position: relative;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+  max-width: 100vw;
+}
+.schedule{display:grid;grid-template-columns: var(--time-w) repeat(5,1fr); gap:10px; align-items:start;}
 .header{font-weight:700;text-align:center;background:var(--accent);color:#fff;padding:8px;border-radius:6px;}
 .time{display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:0.95rem;color:var(--accent);padding:6px 4px;}
 .time .arrive{font-weight:700;}
@@ -39,11 +45,16 @@ h1{color:var(--accent);margin:0 0 12px;}
 .empty{background:transparent; box-shadow:none; height:48px;}
 /* ensure grid rows consistent */
 .schedule > .time, .schedule > .tl-cell, .schedule > .activity, .schedule > .empty, .schedule > .header{min-height:48px;}
-/* responsive */
+.schedule {
+  min-width: 600px; /* 必要に応じて調整 */
+}
 @media(max-width:800px){
   :root{ --time-w:70px; --tl-w:36px;}
   .schedule{grid-template-columns: var(--time-w) var(--tl-w) repeat(5, 1fr);}
   .segment::after{ font-size:12px;}
+  .schedule {
+    min-width: 520px; /* スマホ時も最低幅を確保 */
+  }
 }
 .side-menu {
   position: fixed;
