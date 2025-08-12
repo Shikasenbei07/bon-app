@@ -275,45 +275,48 @@ window.addEventListener('DOMContentLoaded', function() {
     }
   });
   if(row.length>0) table.push(row); // 端数
-  // SVGクリア
-  svg.innerHTML = '';
-  const wrapperRect = wrapper.getBoundingClientRect();
-  // 各カラムで、真下が空ならば下方向に空でないセルが現れるまで探し、最初に見つかったセルと線を結ぶ
-  for(let col=0; col<columns; col++){
-    for(let row=0; row<table.length-1; row++){
-      const cell1 = table[row][col];
-      if(!cell1 || (cell1.classList && cell1.classList.contains('empty'))) continue;
-      // 下方向に空でないセルを探す
-      let nextRow = row + 1;
-      let cell2 = null;
-      while(nextRow < table.length) {
-        const candidate = table[nextRow][col];
-        if(candidate && !(candidate.classList && candidate.classList.contains('empty'))){
-          cell2 = candidate;
-          break;
+  function drawLines() {
+    // SVGクリア
+    svg.innerHTML = '';
+    const wrapperRect = wrapper.getBoundingClientRect();
+    // 各カラムで、真下が空ならば下方向に空でないセルが現れるまで探し、最初に見つかったセルと線を結ぶ
+    for(let col=0; col<columns; col++){
+      for(let row=0; row<table.length-1; row++){
+        const cell1 = table[row][col];
+        if(!cell1 || (cell1.classList && cell1.classList.contains('empty'))) continue;
+        // 下方向に空でないセルを探す
+        let nextRow = row + 1;
+        let cell2 = null;
+        while(nextRow < table.length) {
+          const candidate = table[nextRow][col];
+          if(candidate && !(candidate.classList && candidate.classList.contains('empty'))){
+            cell2 = candidate;
+            break;
+          }
+          nextRow++;
         }
-        nextRow++;
+        if(!cell2) continue; // 下に空でないセルがなければ描画しない
+        const rect1 = cell1.getBoundingClientRect();
+        const rect2 = cell2.getBoundingClientRect();
+        const x = rect1.left + rect1.width/2 - wrapperRect.left;
+        const y1 = rect1.top + rect1.height/2 - wrapperRect.top;
+        const y2 = rect2.top + rect2.height/2 - wrapperRect.top;
+        const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+        line.setAttribute('x1', x);
+        line.setAttribute('y1', y1);
+        line.setAttribute('x2', x);
+        line.setAttribute('y2', y2);
+        line.setAttribute('stroke', '#2a7f59');
+        line.setAttribute('stroke-width', '2');
+        line.setAttribute('opacity', '0.3');
+        svg.appendChild(line);
       }
-      if(!cell2) continue; // 下に空でないセルがなければ描画しない
-      const rect1 = cell1.getBoundingClientRect();
-      const rect2 = cell2.getBoundingClientRect();
-      const x = rect1.left + rect1.width/2 - wrapperRect.left;
-      const y1 = rect1.top + rect1.height/2 - wrapperRect.top;
-      const y2 = rect2.top + rect2.height/2 - wrapperRect.top;
-      const line = document.createElementNS('http://www.w3.org/2000/svg','line');
-      line.setAttribute('x1', x);
-      line.setAttribute('y1', y1);
-      line.setAttribute('x2', x);
-      line.setAttribute('y2', y2);
-      line.setAttribute('stroke', '#2a7f59');
-      line.setAttribute('stroke-width', '2');
-      line.setAttribute('opacity', '0.3');
-      svg.appendChild(line);
     }
   }
-  // リサイズ時も再描画
+  drawLines();
+  // リサイズ時も再描画（リロードしない）
   window.addEventListener('resize', () => {
-    setTimeout(()=>location.reload(), 100);
+    drawLines();
   });
 });
 document.getElementById('menu-toggle').addEventListener('click', function() {
