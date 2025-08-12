@@ -4,61 +4,8 @@
 <meta charset="UTF-8">
 <title>経費計算</title>
 <link rel="stylesheet" href="style.css">
-<style>
-.side-menu {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 200px;
-  height: 100vh;
-  background: #fff;
-  box-shadow: 2px 0 8px rgba(0,0,0,0.08);
-  transform: translateX(-220px);
-  transition: transform 0.2s;
-  z-index: 999;
-  padding-top: 60px;
-}
-.side-menu.open {
-  transform: translateX(0);
-}
-#menu-toggle {
-  background: #2a7f59;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  font-size: 1.5rem;
-  padding: 8px 16px;
-  cursor: pointer;
-  position: fixed;
-  top: 24px;
-  left: 24px;
-  z-index: 1000;
-}
-@media (min-width: 800px) {
-  .side-menu {
-    position: static;
-    transform: none;
-    box-shadow: none;
-    height: auto;
-    width: auto;
-    padding-top: 0;
-  }
-  #menu-toggle {
-    display: none;
-  }
-}
-</style>
 </head>
 <body>
-<button id="menu-toggle" aria-label="メニューを開閉">☰</button>
-<nav class="side-menu" id="side-menu">
-  <ul>
-    <li><a href="index.html">スケジュール</a></li>
-    <li><a href="precost.html">事前経費</a></li>
-    <li><a href="cost.html">追加経費計算</a></li>
-    <li><a href="bring.html">持ち物リスト</a></li>
-  </ul>
-</nav>
 <div class="container">
   <h1>追加料金の計算</h1>
 
@@ -139,36 +86,6 @@
 
   <p id="result"></p>
 </div>
-<script>
-const menuToggle = document.getElementById('menu-toggle');
-const sideMenu = document.getElementById('side-menu');
-
-// メニュー開閉
-menuToggle.addEventListener('click', function() {
-  sideMenu.classList.toggle('open');
-});
-
-// メニュー内リンククリックで自動的に閉じる（モバイル時のみ）
-sideMenu.querySelectorAll('a').forEach(link => {
-  link.addEventListener('click', function() {
-    if (window.innerWidth < 800) {
-      sideMenu.classList.remove('open');
-    }
-  });
-});
-
-// メニュー外クリックで閉じる（モバイル時のみ）
-document.addEventListener('click', function(e) {
-  if (
-    sideMenu.classList.contains('open') &&
-    window.innerWidth < 800 &&
-    !sideMenu.contains(e.target) &&
-    e.target !== menuToggle
-  ) {
-    sideMenu.classList.remove('open');
-  }
-});
-</script>
 <script src="script.js"></script>
 </body>
 </html>

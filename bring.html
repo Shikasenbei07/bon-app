@@ -13,143 +13,62 @@
 			vertical-align: middle;
 			margin-top: 6px;
 		}
-		.side-menu {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 200px;
-  height: 100vh;
-  background: #fff;
-  box-shadow: 2px 0 8px rgba(0,0,0,0.08);
-  transform: translateX(-220px);
-  transition: transform 0.2s;
-  z-index: 999;
-  padding-top: 60px;
-}
-.side-menu.open {
-  transform: translateX(0);
-}
-#menu-toggle {
-  background: #2a7f59;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  font-size: 1.5rem;
-  padding: 8px 16px;
-  cursor: pointer;
-  position: fixed;
-  top: 24px;
-  left: 24px;
-  z-index: 1000;
-}
-@media (min-width: 800px) {
-  .side-menu {
-    position: static;
-    transform: none;
-    box-shadow: none;
-    height: auto;
-    width: auto;
-    padding-top: 0;
-  }
-  #menu-toggle {
-    display: none;
-  }
-}
 	</style>
 </head>
 <body>
-	<button id="menu-toggle" aria-label="メニューを開閉" style="position:fixed;top:24px;left:24px;z-index:1000;">☰</button>
-	<nav class="side-menu" id="side-menu">
-		<ul>
-			<li><a href="index.html">スケジュール</a></li>
-			<li><a href="precost.html">事前経費</a></li>
-			<li><a href="cost.html">追加経費計算</a></li>
-			<li><a href="bring.html">持ち物リスト</a></li>
-		</ul>
-	</nav>
-	<div class="container">
-		<h1>持ち物リスト</h1>
-		<div class="note" style="text-align:center;margin-bottom:12px;">※リロードするとチェックは消えます</div>
-		<section>
-					<ul style="list-style:none;padding:0;margin:0;">
-						<li style="margin-bottom:16px;display:flex;align-items:flex-start;">
-							<input type="checkbox" id="item1" style="margin-right:10px;margin-top:4px;">
-							<label for="item1" style="flex:1;cursor:pointer;">
-								<span style="font-size:1.3em;">💧</span> <b>水分</b><br>
-								<span class="note">ペットボトルや水筒で多めに持参</span>
-							</label>
-						</li>
-						<li style="margin-bottom:16px;display:flex;align-items:flex-start;">
-							<input type="checkbox" id="item2" style="margin-right:10px;margin-top:4px;">
-							<label for="item2" style="flex:1;cursor:pointer;">
-								<span style="font-size:1.3em;">🧻</span> <b>タオル</b><br>
-								<span class="note">汗拭き・手拭き用に複数枚あると安心</span>
-							</label>
-						</li>
-						<li style="margin-bottom:16px;display:flex;align-items:flex-start;">
-							<input type="checkbox" id="item3" style="margin-right:10px;margin-top:4px;">
-							<label for="item3" style="flex:1;cursor:pointer;">
-								<span style="font-size:1.3em;">🧴🧢🌂</span> <b>紫外線対策</b><br>
-								<span class="note">日焼け止め、帽子、日傘など</span>
-							</label>
-						</li>
-						<li style="margin-bottom:16px;display:flex;align-items:flex-start;">
-							<input type="checkbox" id="item4" style="margin-right:10px;margin-top:4px;">
-							<label for="item4" style="flex:1;cursor:pointer;">
-								<span style="font-size:1.3em;">🆒🍬</span> <b>熱中症対策</b><br>
-								<span class="note">ハンディファン、塩タブレットなど</span>
-							</label>
-						</li>
-						<li style="margin-bottom:16px;display:flex;align-items:flex-start;">
-							<input type="checkbox" id="item5" style="margin-right:10px;margin-top:4px;">
-							<label for="item5" style="flex:1;cursor:pointer;">
-								<span style="font-size:1.3em;">🕶️</span> <b>海面反射光対策</b><br>
-								<span class="note">サングラス <span style="color:#888;">(貸出あり・前日21時までに要連絡)</span></span>
-							</label>
-						</li>
-						<li style="margin-bottom:16px;display:flex;align-items:flex-start;">
-							<input type="checkbox" id="item6" style="margin-right:10px;margin-top:4px;">
-							<label for="item6" style="flex:1;cursor:pointer;">
-								<span style="font-size:1.3em;">🧊🧳</span> <b>釣果持ち帰り希望者</b><br>
-								<span class="note">クーラーボックス・氷</span>
-							</label>
-						</li>
-					</ul>
-		</section>
-		<section class="note" style="font-size:0.95em;">
-			必要に応じて、酔い止め・常備薬・雨具などもご持参ください。
-		</section>
-	</div>
-	<script>
-const menuToggle = document.getElementById('menu-toggle');
-const sideMenu = document.getElementById('side-menu');
-
-// メニュー開閉
-menuToggle.addEventListener('click', function() {
-  sideMenu.classList.toggle('open');
-});
-
-// メニュー内リンククリックで自動的に閉じる（モバイル時のみ）
-sideMenu.querySelectorAll('a').forEach(link => {
-  link.addEventListener('click', function() {
-    if (window.innerWidth < 800) {
-      sideMenu.classList.remove('open');
-    }
-  });
-});
-
-// メニュー外クリックで閉じる（モバイル時のみ）
-document.addEventListener('click', function(e) {
-  if (
-    sideMenu.classList.contains('open') &&
-    window.innerWidth < 800 &&
-    !sideMenu.contains(e.target) &&
-    e.target !== menuToggle
-  ) {
-    sideMenu.classList.remove('open');
-  }
-});
-</script>
-	<script src="script.js"></script>
+    <div class="container">
+        <h1>持ち物リスト</h1>
+        <div class="note" style="text-align:center;margin-bottom:12px;">※リロードするとチェックは消えます</div>
+        <section>
+            <ul style="list-style:none;padding:0;margin:0;">
+                <li style="margin-bottom:16px;display:flex;align-items:flex-start;">
+                    <input type="checkbox" id="item1" style="margin-right:10px;margin-top:4px;">
+                    <label for="item1" style="flex:1;cursor:pointer;">
+                        <span style="font-size:1.3em;">💧</span> <b>水分</b><br>
+                        <span class="note">ペットボトルや水筒で多めに持参</span>
+                    </label>
+                </li>
+                <li style="margin-bottom:16px;display:flex;align-items:flex-start;">
+                    <input type="checkbox" id="item2" style="margin-right:10px;margin-top:4px;">
+                    <label for="item2" style="flex:1;cursor:pointer;">
+                        <span style="font-size:1.3em;">🧻</span> <b>タオル</b><br>
+                        <span class="note">汗拭き・手拭き用に複数枚あると安心</span>
+                    </label>
+                </li>
+                <li style="margin-bottom:16px;display:flex;align-items:flex-start;">
+                    <input type="checkbox" id="item3" style="margin-right:10px;margin-top:4px;">
+                    <label for="item3" style="flex:1;cursor:pointer;">
+                        <span style="font-size:1.3em;">🧴🧢🌂</span> <b>紫外線対策</b><br>
+                        <span class="note">日焼け止め、帽子、日傘など</span>
+                    </label>
+                </li>
+                <li style="margin-bottom:16px;display:flex;align-items:flex-start;">
+                    <input type="checkbox" id="item4" style="margin-right:10px;margin-top:4px;">
+                    <label for="item4" style="flex:1;cursor:pointer;">
+                        <span style="font-size:1.3em;">🆒🍬</span> <b>熱中症対策</b><br>
+                        <span class="note">ハンディファン、塩タブレットなど</span>
+                    </label>
+                </li>
+                <li style="margin-bottom:16px;display:flex;align-items:flex-start;">
+                    <input type="checkbox" id="item5" style="margin-right:10px;margin-top:4px;">
+                    <label for="item5" style="flex:1;cursor:pointer;">
+                        <span style="font-size:1.3em;">🕶️</span> <b>海面反射光対策</b><br>
+                        <span class="note">サングラス <span style="color:#888;">(貸出あり・前日21時までに要連絡)</span></span>
+                    </label>
+                </li>
+                <li style="margin-bottom:16px;display:flex;align-items:flex-start;">
+                    <input type="checkbox" id="item6" style="margin-right:10px;margin-top:4px;">
+                    <label for="item6" style="flex:1;cursor:pointer;">
+                        <span style="font-size:1.3em;">🧊🧳</span> <b>釣果持ち帰り希望者</b><br>
+                        <span class="note">クーラーボックス・氷</span>
+                    </label>
+                </li>
+            </ul>
+        </section>
+        <section class="note" style="font-size:0.95em;">
+            必要に応じて、酔い止め・常備薬・雨具などもご持参ください。
+        </section>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
