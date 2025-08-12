@@ -1,0 +1,108 @@
+:root {
+  --bg: #f6fbf9;
+  --card: #ffffff;
+  --accent: #2a7f59;
+  --muted: #6b7785;
+  --rest: #ffa726;
+  --ferry: #42a5f5;
+}
+
+body {
+  margin: 0;
+  font-family: "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: #263238;
+}
+
+header {
+  text-align: center;
+  padding: 20px;
+  background: var(--card);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+header h1 {
+  margin: 0;
+  font-size: 1.4rem;
+  color: var(--accent);
+}
+header p {
+  margin: 6px 0 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.timeline-wrapper {
+  overflow-x: auto;
+  padding: 20px;
+  white-space: nowrap;
+}
+
+.timeline {
+  display: flex;
+  align-items: center;
+  min-width: max-content;
+}
+
+.step {
+  background: var(--card);
+  border-radius: 8px;
+  padding: 10px;
+  width: 120px;
+  flex-shrink: 0;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.step .time {
+  font-weight: bold;
+  color: var(--accent);
+  font-size: 0.95rem;
+}
+.step .point {
+  margin-top: 4px;
+  font-size: 0.9rem;
+}
+.step .note {
+  margin-top: 4px;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.step .note.rest {
+  color: var(--rest);
+  font-weight: bold;
+}
+.step .note.ferry {
+  color: var(--ferry);
+  font-weight: bold;
+}
+
+.section {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+}
+
+.section .line {
+  height: 4px;
+  width: 100%;
+  background: var(--accent);
+  margin-bottom: 6px;
+}
+.section .line.ferry {
+  background: var(--ferry);
+}
+
+.section .duration {
+  font-size: 0.8rem;
+  color: var(--accent);
+}
+.section .cost {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.section .cost.ferry {
+  color: var(--ferry);
+  font-weight: bold;
+}

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>経路タイムライン（所要時間と料金付き）</title>
+<link rel="stylesheet" href="style_route.css">
+</head>
+<body>
+
+<header>
+  <h1>高速道路 経路タイムライン</h1>
+  <p>サンプルデータ（固定）｜所要時間・料金表示付き</p>
+</header>
+
+<main>
+  <div class="timeline-wrapper">
+    <div class="timeline">
+
+      <!-- 出発 -->
+      <div class="step">
+        <div class="time">08:00</div>
+        <div class="point">名古屋IC</div>
+        <div class="note">出発</div>
+      </div>
+
+      <!-- 区間 -->
+      <div class="section">
+        <div class="line"></div>
+        <div class="duration">30分</div>
+        <div class="cost">¥1,200</div>
+      </div>
+
+      <div class="step">
+        <div class="time">08:30</div>
+        <div class="point">豊田JCT</div>
+        <div class="note">伊勢湾岸道へ</div>
+      </div>
+
+      <div class="section">
+        <div class="line"></div>
+        <div class="duration">40分</div>
+        <div class="cost">¥1,800</div>
+      </div>
+
+      <div class="step">
+        <div class="time">09:10</div>
+        <div class="point">音羽蒲郡IC</div>
+        <div class="note">東名高速へ合流</div>
+      </div>
+
+      <div class="section">
+        <div class="line"></div>
+        <div class="duration">20分</div>
+        <div class="cost">¥0</div>
+      </div>
+
+      <div class="step">
+        <div class="time">09:30</div>
+        <div class="point">伊良湖PA</div>
+        <div class="note rest">休憩 20分</div>
+      </div>
+
+      <div class="section">
+        <div class="line ferry"></div>
+        <div class="duration">35分</div>
+        <div class="cost ferry">¥2,500</div>
+      </div>
+
+      <div class="step">
+        <div class="time">10:05</div>
+        <div class="point">豊橋港</div>
+        <div class="note ferry">フェリー乗換</div>
+      </div>
+
+      <div class="section">
+        <div class="line"></div>
+        <div class="duration">10分</div>
+        <div class="cost">¥0</div>
+      </div>
+
+      <div class="step">
+        <div class="time">10:15</div>
+        <div class="point">目的地</div>
+        <div class="note">到着</div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+</body>
+</html>

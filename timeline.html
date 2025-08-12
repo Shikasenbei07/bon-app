@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>経路タイムライン（縦型）</title>
+<style>
+.route-timeline {
+  position: relative;
+  margin-left: 20px;
+  padding-left: 40px;
+}
+.route-timeline::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 15px;
+  width: 4px;
+  height: 100%;
+  background: #2a7f59;
+}
+.route-step {
+  position: relative;
+  margin-bottom: 30px;
+}
+.route-step:last-child {
+  margin-bottom: 0;
+}
+.route-step::before {
+  content: "";
+  position: absolute;
+  left: -32.5px;
+  top: 4px;
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  border: 3px solid #2a7f59;
+  border-radius: 50%;
+}
+.step-title {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #2a7f59;
+}
+.step-info {
+  font-size: 0.9em;
+  color: #555;
+  margin-left: 5px;
+}
+</style>
+</head>
+<body>
+
+<div class="route-timeline">
+
+  <div class="route-step">
+    <div class="step-title">名古屋駅</div>
+  </div>
+
+  <div class="route-step">
+    <div class="step-info">所要時間: 50分 / 料金: 1,200円</div>
+    <div class="step-title">豊橋駅</div>
+  </div>
+
+  <div class="route-step">
+    <div class="step-info">所要時間: 15分 / 料金: 200円</div>
+    <div class="step-title">豊橋港</div>
+  </div>
+
+</div>
+
+</body>
+</html>

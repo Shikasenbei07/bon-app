@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>経費計算</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav class="side-menu">
+    <ul>
+      <li><a href="index.html">スケジュール</a></li>
+      <li><a href="precost.html">事前経費</a></li>
+      <li><a href="cost.html">追加経費計算</a></li>
+      <li><a href="bring.html">持ち物リスト</a></li>
+    </ul>
+  </nav>
+<div class="container">
+  <h1>追加料金の計算</h1>
+
+  <section>
+    <label for="hours">
+      <h3>釣り時間（時間単位）</h3>
+      <ul class="note">
+        <li>基本料金：2時間6000円、以降1時間延長ごとに+1000円</li>
+        <li>貸竿：通常1000円 / リール竿1500円</li>
+        <li>釣り餌：こうなご500円 / エビ500円 / 沖あみ500円</li>
+        <li>※今回はリール竿+こうなごとして計算</li>
+      </ul>
+    </label>
+    <input type="number" id="hours" step="1" min="0" placeholder="例: 3">
+  </section>
+
+  <section>
+    <label for="bike-hima">
+      <h3>レンタサイクル【日間賀島】</h3>
+      <p class="note">1時間550円（最大2時間制限）</p>
+    </label>
+    <select id="bike-hima">
+      <option value="0">利用なし</option>
+      <option value="550">1時間</option>
+      <option value="1100">2時間</option>
+    </select>
+  </section>
+
+  <section>
+    <label for="bike-sino">
+      <h3>レンタサイクル【篠島】</h3>
+      <p class="note">2時間以内500円 / 1日1000円</p>
+    </label>
+    <select id="bike-sino">
+      <option value="0">利用なし</option>
+      <option value="500">～2時間</option>
+      <option value="1000">1日</option>
+    </select>
+  </section>
+
+  <section>
+    <label for="lunch">
+      <h3>昼食【各自】</h3>
+    </label>
+    <select id="lunch">
+      <option value="0">選択してください</option>
+      <option value="650">ちょっぴり (+650円)</option>
+      <option value="1200">そこそこ (+1200円)</option>
+      <option value="2500">ガッツリ (+2500円)</option>
+    </select>
+  </section>
+
+  <section>
+    <label for="cafe">
+      <h3>カフェ【<a href="https://shinojima-kankou.com/" target="_blank">DIEUX TERRACE 篠島</a>】</h3>
+      <p class="note">PCの場合はCtrlで複数選択可能</p>
+    </label>
+    <select id="cafe" multiple size="3">
+      <option value="500">ドリンク (+500円)</option>
+      <option value="900">パフェ (+900円)</option>
+      <option value="1600">軽食 (+1600円)</option>
+    </select>
+  </section>
+
+  <section>
+    <label for="dinner">
+      <h3>夕食【<a href="https://www.uotaro.com/handa_sushi/sushi/" target="_blank">回転鮨 魚太郎</a>】</h3>
+    </label>
+    <select id="dinner">
+      <option value="0">選択してください</option>
+      <option value="1600">ちょっぴり (+1600円)</option>
+      <option value="3000">そこそこ (+3000円)</option>
+      <option value="4500">ガッツリ (+4500円)</option>
+    </select>
+  </section>
+
+  <button id="calc-btn">計算</button>
+
+  <p id="result"></p>
+</div>
+<script src="script.js"></script>
+</body>
+</html>

@@ -32,3 +32,30 @@ function calc() {
     document.getElementById("result").innerText =
         `釣り時間: ${roundedHours}時間 / 料金: ${price}円`;
 }
+
+// ハンバーガーメニュー制御
+document.addEventListener("DOMContentLoaded", function() {
+  // ハンバーガーアイコン生成
+  if (!document.querySelector('.hamburger')) {
+    const btn = document.createElement('button');
+    btn.className = 'hamburger';
+    btn.innerHTML = '<span></span><span></span><span></span>';
+    document.body.appendChild(btn);
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      document.querySelector('.side-menu').classList.toggle('open');
+      document.body.classList.toggle('menu-open');
+    });
+    // メニュー外クリックで閉じる
+    document.addEventListener('click', function(e) {
+      if (
+        document.querySelector('.side-menu.open') &&
+        !e.target.closest('.side-menu') &&
+        !e.target.closest('.hamburger')
+      ) {
+        document.querySelector('.side-menu').classList.remove('open');
+        document.body.classList.remove('menu-open');
+      }
+    });
+  }
+});

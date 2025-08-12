@@ -1,91 +1,294 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<title>料金計算ツール</title>
-<link rel="stylesheet" href="style.css">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>行程表</title>
+<style>
+:root{
+  --time-w:80px;
+  --tl-w:40px;
+  --accent:#2a7f59;
+  --muted:#666;
+  --card:#fff;
+}
+body{font-family: "Noto Sans JP", Arial, sans-serif; background:#f8f9fa; margin:0;padding:24px;}
+h1{color:var(--accent);margin:0 0 12px;}
+.schedule-wrapper{position:relative;}
+  .schedule{display:grid;grid-template-columns: var(--time-w) repeat(5,1fr); gap:10px; align-items:start;}
+.header{font-weight:700;text-align:center;background:var(--accent);color:#fff;padding:8px;border-radius:6px;}
+.time{display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:0.95rem;color:var(--accent);padding:6px 4px;}
+.time .arrive{font-weight:700;}
+.time .depart{font-size:0.85rem;color:var(--muted);}
+/* vertical continuous line */
+.schedule-wrapper::before{
+  content:''; position:absolute;
+  left: calc(var(--time-w) + (var(--tl-w)/2) - 2px);
+  top: 0; bottom: 0;
+  width:4px; background:var(--accent); border-radius:4px; opacity:0.18;
+  pointer-events:none;
+  z-index:0;
+}
+.tl-cell{position:relative; width:100%; height:48px; display:flex; align-items:center; justify-content:center; z-index:2;}
+.marker{position:relative; width:16px; height:16px; border-radius:50%; background:#fff; border:4px solid var(--accent); box-sizing:content-box;}
+.segment{position:absolute; left:50%; transform:translateX(-50%); top:0; bottom:0; width:8px; background:transparent; cursor:default;}
+.segment::after{ content: attr(data-info); position:absolute; left:calc(100% + 8px); top:50%; transform:translateY(-50%); background: rgba(0,0,0,0.85); color:#fff; padding:6px 8px; border-radius:6px; white-space:nowrap; font-size:13px; opacity:0; pointer-events:none; transition:opacity .12s; z-index:50;}
+.segment:hover::after{ opacity:1; }
+/* activity cells */
+.activity{background:var(--card); border-radius:8px; padding:8px; box-shadow:0 2px 6px rgba(0,0,0,0.08); text-align:center; z-index:1; font-size:0.95rem;}
+.empty{background:transparent; box-shadow:none; height:48px;}
+/* ensure grid rows consistent */
+.schedule > .time, .schedule > .tl-cell, .schedule > .activity, .schedule > .empty, .schedule > .header{min-height:48px;}
+/* responsive */
+@media(max-width:800px){
+  :root{ --time-w:70px; --tl-w:36px;}
+  .schedule{grid-template-columns: var(--time-w) var(--tl-w) repeat(5, 1fr);}
+  .segment::after{ font-size:12px;}
+}
+</style>
+<link rel="stylesheet" href="style_column_highlight.css">
 </head>
 <body>
-<div class="container">
-  <h1>追加料金の計算</h1>
+  <nav class="side-menu">
+    <ul>
+      <li><a href="index.html">スケジュール</a></li>
+      <li><a href="precost.html">事前経費</a></li>
+      <li><a href="cost.html">追加経費計算</a></li>
+      <li><a href="bring.html">持ち物リスト</a></li>
+    </ul>
+  </nav>
+<h1>行程表</h1>
+<div class="schedule-wrapper">
+  <div class="schedule">
+  <!-- SVG for cell-to-cell lines -->
+  <svg id="cell-lines" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;"></svg>
+  <div></div>
+  <div class="header">🦌</div>
+    <div class="header">🎰</div>
+    <div class="header">🌸</div>
+    <div class="header">🦖</div>
+    <div class="header">☕</div>
 
-  <section>
-    <label for="hours">
-      <h3>釣り時間（時間単位）</h3>
-      <ul class="note">
-        <li>基本料金：2時間6000円、以降1時間延長ごとに+1000円</li>
-        <li>貸竿：通常1000円 / リール竿1500円</li>
-        <li>釣り餌：こうなご500円 / エビ500円 / 沖あみ500円</li>
-        <li>※今回はリール竿+こうなごとして計算</li>
-      </ul>
-    </label>
-    <input type="number" id="hours" step="1" min="0" placeholder="例: 3">
-  </section>
+  <div class="time"><div class="arrive">-</div><div class="depart">5:00</div></div>
+    <div class="activity" data-cols="2" data-text="パッパラ自宅" style="grid-column: span 2;">パッパラ自宅</div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
 
-  <section>
-    <label for="bike-hima">
-      <h3>レンタサイクル【日間賀島】</h3>
-      <p class="note">1時間550円（最大2時間制限）</p>
-    </label>
-    <select id="bike-hima">
-      <option value="0">利用なし</option>
-      <option value="550">1時間</option>
-      <option value="1100">2時間</option>
-    </select>
-  </section>
+  <div class="time"><div class="arrive">5:15</div><div class="depart">5:17</div></div>
+    <div class="activity" data-cols="3" data-text="ピアゴ ラ フーズコア黒川店" style="grid-column: span 3;">ピアゴ ラ フーズコア黒川店</div>
+    <div class="empty"></div>
+    <div class="empty"></div>
 
-  <section>
-    <label for="bike-sino">
-      <h3>レンタサイクル【篠島】</h3>
-      <p class="note">2時間以内500円 / 1日1000円</p>
-    </label>
-    <select id="bike-sino">
-      <option value="0">利用なし</option>
-      <option value="500">～2時間</option>
-      <option value="1000">1日</option>
-    </select>
-  </section>
+  <div class="time"><div class="arrive">6:00</div><div class="depart">6:02</div></div>
+    <div class="activity" data-cols="4" data-text="緒川駅" style="grid-column: span 4;">緒川駅</div>
+    <div class="empty"></div>
 
-  <section>
-    <label for="lunch">
-      <h3>昼食【各自】</h3>
-    </label>
-    <select id="lunch">
-      <option value="0">選択してください</option>
-      <option value="650">ちょっぴり (+650円)</option>
-      <option value="1200">そこそこ (+1200円)</option>
-      <option value="2500">ガッツリ (+2500円)</option>
-    </select>
-  </section>
+  <div class="time"><div class="arrive">6:45</div><div class="depart">7:00</div></div>
+    <div class="activity" data-cols="4" data-text="師崎港" style="grid-column: span 4;">師崎港</div>
+    <div class="empty"></div>
 
-  <section>
-    <label for="cafe">
-      <h3>カフェ【<a href="https://shinojima-kankou.com/" target="_blank">DIEUX TERRACE 篠島</a>】</h3>
-      <p class="note">PCの場合はCtrlで複数選択可能</p>
-    </label>
-    <select id="cafe" multiple size="3">
-      <option value="500">ドリンク (+500円)</option>
-      <option value="900">パフェ (+900円)</option>
-      <option value="1600">軽食 (+1600円)</option>
-    </select>
-  </section>
+  <div class="time"><div class="arrive">7:10</div><div class="depart">-</div></div>
+    <div class="activity" data-cols="4" data-text="篠島：釣り（3時間予定）" style="grid-column: span 4;">篠島：釣り（3時間予定）</div>
+    <div class="empty"></div>
 
-  <section>
-    <label for="dinner">
-      <h3>夕食【<a href="https://www.uotaro.com/handa_sushi/sushi/" target="_blank">回転鮨 魚太郎</a>】</h3>
-    </label>
-    <select id="dinner">
-      <option value="0">選択してください</option>
-      <option value="1600">ちょっぴり (+1600円)</option>
-      <option value="3000">そこそこ (+3000円)</option>
-      <option value="4500">ガッツリ (+4500円)</option>
-    </select>
-  </section>
+  <div class="time"><div class="arrive">-</div><div class="depart">8:44</div></div>
+    <div class="activity" data-cols="4" data-text="篠島：釣り（3時間予定）" style="grid-column: span 4;">篠島：釣り（3時間予定）</div>
+    <div class="activity" data-cols="1" data-text="万場大橋" style="grid-column: span 1;">万場大橋</div>
 
-  <button id="calc-btn">計算</button>
+  <div class="time"><div class="arrive">8:50</div><div class="depart">8:59</div></div>
+    <div class="activity" data-cols="4" data-text="篠島：釣り（3時間予定）" style="grid-column: span 4;">篠島：釣り（3時間予定）</div>
+    <div class="activity" data-cols="1" data-text="岩塚駅" style="grid-column: span 1;">岩塚駅</div>
 
-  <p id="result"></p>
+  <div class="time"><div class="arrive">9:07</div><div class="depart">9:26</div></div>
+    <div class="activity" data-cols="4" data-text="篠島：釣り（3時間予定）" style="grid-column: span 4;">篠島：釣り（3時間予定）</div>
+    <div class="activity" data-cols="1" data-text="名古屋駅" style="grid-column: span 1;">名古屋駅</div>
+
+  <div class="time"><div class="arrive">10:21</div><div class="depart">11:05</div></div>
+    <div class="activity" data-cols="4" data-text="篠島：釣り（3時間予定）" style="grid-column: span 4;">篠島：釣り（3時間予定）</div>
+    <div class="activity" data-cols="1" data-text="河和駅/河和港" style="grid-column: span 1;">河和駅/河和港</div>
+
+  <div class="time"><div class="arrive">11:05</div><div class="depart">11:30</div></div>
+    <div class="activity" data-cols="1" data-text="移動" style="grid-column: span 1;">移動</div>
+    <div class="activity" data-cols="3" data-text="篠島：自由行動" style="grid-column: span 3;">篠島：自由行動</div>
+    <div class="empty"></div>
+
+  <div class="time"><div class="arrive">11:25</div><div class="depart">14:30</div></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="activity" data-cols="1" data-text="日間賀島[着：西港/発：東港]" style="grid-column: span 1;">日間賀島[着：西港/発：東港]</div>
+
+  <div class="time"><div class="arrive">11:40</div><div class="depart">14:30</div></div>
+    <div class="activity" data-cols="1" data-text="日間賀島[着：西港/発：東港]" style="grid-column: span 1;">日間賀島[着：西港/発：東港]</div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+
+  <div class="time"><div class="arrive">14:35</div><div class="depart">16:30</div></div>
+    <div class="activity" data-cols="5" data-text="篠島DIEUX TERRACE" style="grid-column: span 5;">篠島DIEUX TERRACE</div>
+
+  <div class="time"><div class="arrive">17:00</div><div class="depart">17:21</div></div>
+    <div class="activity" data-cols="4" data-text="×" style="grid-column: span 4;">×</div>
+    <div class="activity" data-cols="1" data-text="河和港/河和駅" style="grid-column: span 1;">河和港/河和駅</div>
+
+  <div class="time"><div class="arrive">-</div><div class="depart">16:55</div></div>
+    <div class="activity" data-cols="4" data-text="篠島" style="grid-column: span 4;">篠島</div>
+    <div class="empty"></div>
+
+  <div class="time"><div class="arrive">17:15</div><div class="depart">17:20</div></div>
+    <div class="activity" data-cols="4" data-text="師崎港" style="grid-column: span 4;">師崎港</div>
+    <div class="empty"></div>
+
+  <div class="time"><div class="arrive">17:40</div><div class="depart">-</div></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="activity" data-cols="1" data-text="知多半田駅" style="grid-column: span 1;">知多半田駅</div>
+
+  <div class="time"><div class="arrive">18:05</div><div class="depart">19:50</div></div>
+    <div class="activity" data-cols="5" data-text="回転鮨 魚太郎" style="grid-column: span 5;">回転鮨 魚太郎</div>
+
+  <div class="time"><div class="arrive">19:55</div><div class="depart">20:02</div></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="activity" data-cols="1" data-text="半田駅" style="grid-column: span 1;">半田駅</div>
+    <div class="empty"></div>
+
+  <div class="time"><div class="arrive">20:05</div><div class="depart">20:11</div></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="activity" data-cols="1" data-text="知多半田駅" style="grid-column: span 1;">知多半田駅</div>
+
+  <div class="time"><div class="arrive">20:19</div><div class="depart">-</div></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="activity" data-cols="1" data-text="緒川駅" style="grid-column: span 1;">緒川駅</div>
+    <div class="empty"></div>
+
+  <div class="time"><div class="arrive">20:40</div><div class="depart">20:42</div></div>
+    <div class="activity" data-cols="3" data-text="ピアゴ ラ フーズコア黒川店" style="grid-column: span 3;">ピアゴ ラ フーズコア黒川店</div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+
+  <div class="time"><div class="arrive">20:44</div><div class="depart">20:53</div></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="activity" data-cols="1" data-text="名古屋駅" style="grid-column: span 1;">名古屋駅</div>
+
+  <div class="time"><div class="arrive">21:00</div><div class="depart">-</div></div>
+    <div class="activity" data-cols="2" data-text="パッパラ自宅" style="grid-column: span 2;">パッパラ自宅</div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+
+  <div class="time"><div class="arrive">21:02</div><div class="depart">21:07</div></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="activity" data-cols="1" data-text="岩塚駅" style="grid-column: span 1;">岩塚駅</div>
+
+  <div class="time"><div class="arrive">21:12</div><div class="depart">-</div></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="activity" data-cols="1" data-text="万場大橋" style="grid-column: span 1;">万場大橋</div>
+
+  </div>
 </div>
-<script src="script.js"></script>
+<script>
+// 同じ列のセル同士のみ直線を引く（grid-column: span Nも考慮）
+window.addEventListener('DOMContentLoaded', function() {
+  const wrapper = document.getElementById('schedule-wrapper') || document.querySelector('.schedule-wrapper');
+  const schedule = wrapper.querySelector('.schedule');
+  const svg = document.getElementById('cell-lines');
+  // カラム数取得
+  const style = getComputedStyle(schedule);
+  const columns = style.gridTemplateColumns.split(' ').length;
+  // 各行ごとにカラムを埋める形でセルを配置
+  const cells = Array.from(schedule.children);
+  let table = [];
+  let row = [];
+  let colIdx = 0;
+  cells.forEach(cell => {
+    // grid-column: span N対応
+    let span = 1;
+    const spanMatch = (cell.getAttribute('style')||'').match(/grid-column:\s*span\s*(\d+)/);
+    if(spanMatch) span = parseInt(spanMatch[1]);
+    for(let i=0;i<span;i++){
+      row.push(cell);
+      colIdx++;
+      if(colIdx===columns){
+        table.push(row);
+        row=[];
+        colIdx=0;
+      }
+    }
+  });
+  if(row.length>0) table.push(row); // 端数
+  // カラムごとにセルを抽出
+  let colCells = Array.from({length: columns}, () => []);
+  table.forEach((r, rowIdx) => {
+    r.forEach((cell, colIdx) => {
+      colCells[colIdx].push({cell, rowIdx});
+    });
+  });
+  // SVGクリア
+  svg.innerHTML = '';
+  const wrapperRect = wrapper.getBoundingClientRect();
+  // 各カラムで上下のセルを結ぶ
+  colCells.forEach((col, colIdx) => {
+    for(let i=0;i<col.length-1;i++){
+      const {cell:cell1} = col[i];
+      const {cell:cell2} = col[i+1];
+      if(!cell1 || !cell2 || cell1===cell2) continue;
+      if((cell1.classList && cell1.classList.contains('empty')) || (cell2.classList && cell2.classList.contains('empty'))) continue;
+      // cell2の次以降に何もセルが無い場合のみ線を描画しない
+      let hasCellBelow = false;
+      for(let j=i+2;j<col.length;j++){
+        const c = col[j].cell;
+        if(c) {
+          hasCellBelow = true;
+          break;
+        }
+      }
+      if(!hasCellBelow) continue;
+      // cell2の次も同じセルならスキップ（spanで同じセルが続く場合の多重線防止）
+      if (col[i+2] && col[i+2].cell === cell2) continue;
+      const rect1 = cell1.getBoundingClientRect();
+      const rect2 = cell2.getBoundingClientRect();
+      // x座標は上のセルの中心、y座標は上のセルの中心→下のセルの上辺中央
+      const x = rect1.left + rect1.width/2 - wrapperRect.left;
+      const y1 = rect1.top + rect1.height/2 - wrapperRect.top;
+      const y2 = rect2.top - wrapperRect.top;
+      const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+      line.setAttribute('x1', x);
+      line.setAttribute('y1', y1);
+      line.setAttribute('x2', x);
+      line.setAttribute('y2', y2);
+      line.setAttribute('stroke', '#2a7f59');
+      line.setAttribute('stroke-width', '2');
+      line.setAttribute('opacity', '0.3');
+      svg.appendChild(line);
+    }
+  });
+  // リサイズ時も再描画
+  window.addEventListener('resize', () => {
+    setTimeout(()=>location.reload(), 100);
+  });
+});
+</script>
 </body>
+<script src="script_column_highlight.js"></script>
 </html>

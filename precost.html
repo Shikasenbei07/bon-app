@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>交通費・事前経費一覧</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Google Sheetsのテーブルを中央カード風に */
+    .container {
+      max-width: 900px;
+      margin: 30px auto;
+      background: #fff;
+      padding: 20px 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .ritz .waffle {
+      margin: 0 auto;
+      width: 100px;
+      min-width: 100%;
+      border-collapse: collapse;
+      font-size: 1em;
+      table-layout: auto;
+      border: 1px solid #bbb;
+    }
+    .ritz .waffle th,
+    .ritz .waffle td {
+      padding: 8px 6px;
+      border: 1px solid #bbb;
+      white-space: pre-line;
+      overflow-wrap: break-word;
+      word-break: break-all;
+      text-overflow: initial;
+    }
+    .ritz .waffle th {
+      text-align: center !important;
+      vertical-align: middle;
+    }
+    .ritz .waffle .s3 {
+      background-color: #fce5cd !important;
+    }
+    .ritz .waffle .s0,
+    .ritz .waffle .s1,
+    .ritz .waffle .s2,
+    .ritz .waffle .s4 {
+      background-color: #fff !important;
+    }
+    .ritz .waffle .s0 {
+      font-weight: bold;
+      background: #e9ecef !important;
+    }
+    .ritz .waffle .s1 {
+      font-weight: bold;
+      color: #2d6a4f;
+    }
+    .ritz .waffle .s4 {
+      color: #555;
+    }
+    /* 数値セルを右寄せ */
+    .num {
+      text-align: right !important;
+      font-variant-numeric: tabular-nums;
+    }
+    @media (max-width: 700px) {
+      .container { padding: 8px 2px; }
+      .ritz .waffle { font-size: 0.9em; }
+    }
+  </style>
+  <script>
+    // 数値セルのカンマ区切りフォーマット
+    window.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.num').forEach(function(td) {
+        let txt = td.textContent.trim();
+        if (/^\d+$/.test(txt)) {
+          td.textContent = Number(txt).toLocaleString('ja-JP');
+        }
+      });
+    });
+  </script>
+</head>
+<body>
+  <nav class="side-menu">
+    <ul>
+      <li><a href="index.html">スケジュール</a></li>
+      <li><a href="precost.html">事前経費</a></li>
+      <li><a href="cost.html">追加経費計算</a></li>
+      <li><a href="bring.html">持ち物リスト</a></li>
+    </ul>
+  </nav>
+  <div class="container">
+    <h1>交通費・事前経費一覧</h1>
+    <!-- Google Sheets埋め込みテーブルここから -->
+    <div class="ritz grid-container" dir="ltr">
+      <table class="waffle" cellspacing="0" cellpadding="0">
+  <!-- ヘッダー削除 -->
+        <tbody>
+          <tr>
+            <td class="s0" dir="ltr" colspan="2" style="width: 80px;"></td>
+            <td class="s0" dir="ltr" style="width: 60px;">🦌</td>
+            <td class="s0" dir="ltr" style="width: 60px;">🎰</td>
+            <td class="s0" dir="ltr" style="width: 60px;">🌸</td>
+            <td class="s0" dir="ltr" style="width: 60px;">🦖</td>
+            <td class="s0" dir="ltr" style="width: 60px;">☕</td>
+            <td class="s0" dir="ltr" style="width: 180px;">備考</td>
+          </tr>
+          <tr>
+            <td class="s1" dir="ltr" rowspan="3">車</td>
+            <td class="s1" dir="ltr">行（高速料金含）</td>
+            <td class="s2 num" dir="ltr">750</td>
+            <td class="s2 num" dir="ltr"></td>
+            <td class="s2 num" dir="ltr">750</td>
+            <td class="s2 num" dir="ltr">750</td>
+            <td class="s2 num" dir="ltr"></td>
+            <td class="s1" dir="ltr">高速料金：¥1,740</td>
+          </tr>
+          <tr>
+            <td class="s1" dir="ltr">帰（高速料金含）</td>
+            <td class="s2 num" dir="ltr">850</td>
+            <td class="s2 num" dir="ltr"></td>
+            <td class="s2 num" dir="ltr">850</td>
+            <td class="s2 num" dir="ltr"></td>
+            <td class="s2 num" dir="ltr"></td>
+            <td class="s1" dir="ltr">高速料金：¥1,160</td>
+          </tr>
+          <tr>
+            <td class="s1" dir="ltr">駐車場</td>
+            <td class="s2 num" dir="ltr"></td>
+            <td class="s2 num" dir="ltr">1200</td>
+            <td class="s2 num" dir="ltr"></td>
+            <td class="s2 num" dir="ltr"></td>
+            <td class="s2 num" dir="ltr"></td>
+            <td class="s1" dir="ltr">¥100/h×12hとして計算</td>
+          </tr>
+          <tr>
+            <td class="s1" dir="ltr" rowspan="3">バス・鉄道</td>
+            <td class="s1" dir="ltr">【往復】万場大橋～名古屋</td>
+            <td class="s2 num" dir="ltr"></td>
+            <td class="s2 num" dir="ltr"></td>
+            <td class="s2 num" dir="ltr"></td>
+            <td class="s2 num" dir="ltr"></td>
+            <td class="s2 num" dir="ltr">900</td>
+            <td class="s1" dir="ltr"></td>
+          </tr>
+          <tr>
+            <td class="s1" dir="ltr">【往復】名古屋～河和</td>
+            <td class="s2 num" dir="ltr"></td>
+            <td class="s2 num" dir="ltr"></td>
+            <td class="s2 num" dir="ltr"></td>
+            <td class="s2 num" dir="ltr"></td>
+            <td class="s2 num" dir="ltr">4300</td>
+            <td class="s1" dir="ltr"><span style="text-decoration:underline;text-decoration-skip-ink:none;-webkit-text-decoration-skip:none;color:#1155cc;"><a target="_blank" href="https://www.meitetsu.co.jp/plan/campaign/detail/1285425_8034.html">企画乗車券</a></span>から多幸クーポン2000円分を除外</td>
+          </tr>
+          <tr>
+            <td class="s1" dir="ltr">【帰】半田～緒川</td>
+            <td class="s2 num" dir="ltr"></td>
+            <td class="s2 num" dir="ltr"></td>
+            <td class="s2 num" dir="ltr"></td>
+            <td class="s2 num" dir="ltr">250</td>
+            <td class="s2 num" dir="ltr"></td>
+            <td class="s1" dir="ltr"></td>
+          </tr>
+          <tr>
+            <td class="s1" dir="ltr" rowspan="3">高速船</td>
+            <td class="s1" dir="ltr">師崎・篠島往復</td>
+            <td class="s2 num" dir="ltr">1530</td>
+            <td class="s2 num" dir="ltr">1530</td>
+            <td class="s2 num" dir="ltr">1530</td>
+            <td class="s2 num" dir="ltr">1530</td>
+            <td class="s2 num" dir="ltr"></td>
+            <td class="s1" dir="ltr"></td>
+          </tr>
+          <tr>
+            <td class="s1" dir="ltr">日間賀島→篠島</td>
+            <td class="s2 num" dir="ltr"></td>
+            <td class="s2 num" dir="ltr"></td>
+            <td class="s2 num" dir="ltr"></td>
+            <td class="s2 num" dir="ltr"></td>
+            <td class="s2 num" dir="ltr">500</td>
+            <td class="s1" dir="ltr">河和～2島往復は上記企画乗車券に包含</td>
+          </tr>
+          <tr>
+            <td class="s1" dir="ltr">篠島・日間賀島往復</td>
+            <td class="s2 num" dir="ltr">960</td>
+            <td class="s2 num" dir="ltr"></td>
+            <td class="s2 num" dir="ltr"></td>
+            <td class="s2 num" dir="ltr"></td>
+            <td class="s2 num" dir="ltr"></td>
+            <td class="s1" dir="ltr"></td>
+          </tr>
+          <tr>
+            <td class="s1" dir="ltr" colspan="2">合計</td>
+            <td class="s3 num">4090</td>
+            <td class="s3 num">2730</td>
+            <td class="s3 num">3130</td>
+            <td class="s3 num">2530</td>
+            <td class="s3 num">5700</td>
+            <td class="s4"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- Google Sheets埋め込みテーブルここまで -->
+  </div>
+</body>
