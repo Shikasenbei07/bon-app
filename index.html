@@ -330,8 +330,33 @@ window.addEventListener('DOMContentLoaded', function() {
     drawLines();
   });
 });
-document.getElementById('menu-toggle').addEventListener('click', function() {
-  document.getElementById('side-menu').classList.toggle('open');
+const menuToggle = document.getElementById('menu-toggle');
+const sideMenu = document.getElementById('side-menu');
+
+// メニュー開閉
+menuToggle.addEventListener('click', function() {
+  sideMenu.classList.toggle('open');
+});
+
+// メニュー内リンククリックで自動的に閉じる（モバイル時のみ）
+sideMenu.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', function() {
+    if (window.innerWidth < 800) {
+      sideMenu.classList.remove('open');
+    }
+  });
+});
+
+// メニュー外クリックで閉じる（モバイル時のみ）
+document.addEventListener('click', function(e) {
+  if (
+    sideMenu.classList.contains('open') &&
+    window.innerWidth < 800 &&
+    !sideMenu.contains(e.target) &&
+    e.target !== menuToggle
+  ) {
+    sideMenu.classList.remove('open');
+  }
 });
 </script>
 </body>
